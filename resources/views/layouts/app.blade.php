@@ -16,10 +16,12 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
 </head>
 <body>
     <div id="app">
-
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -73,51 +75,60 @@
 
         <main class="py-4">
 
-          @auth
-          <div class="row justfy-content-center">
+          <div class="container">
 
-            <div class="col-md-4">
 
-              <ul class="list-group">
 
-                <li class="list-group-item">
-                  <a href=" {{ route('post.index') }} ">Posts</a>
-                </li>
+                  @if(session()->has('success'))
+                    <div class="alert alert-success">
+                      {{ session()->get('success') }}
+                    </div>
+                  @endif
 
-                <li class="list-group-item">
-                  <a href="{{ route('catagory.index') }}">Catagories</a>
-                </li>
+            @auth
+            <div class="row justfy-content-center">
 
-              </ul>
+              <div class="col-md-4">
 
-              <ul class="list-group">
+                <ul class="list-group">
 
-                <li class="list-group-item">
-                  <a href="{{ route('trashed-post') }}">Trashed Posts</a>
-                </li>
+                  <li class="list-group-item">
+                    <a href=" {{ route('post.index') }} ">Posts</a>
+                  </li>
 
-              </ul>
+                  <li class="list-group-item">
+                    <a href="{{ route('catagory.index') }}">Catagories</a>
+                  </li>
 
-            </div>
+                </ul>
 
-            <div class="col-md-8">
+                <ul class="list-group mt-5">
+
+                  <li class="list-group-item">
+                    <a href="{{ route('trashed-post') }}">Trashed Posts</a>
+                  </li>
+
+                </ul>
+
+              </div>
+
+              <div class="col-md-8">
+                @yield('content')
+              </div>
+
+              </div>
+            @else
               @yield('content')
-            </div>
+            @endauth
 
-            </div>
-          @else
-            @yield('content')
-          @endauth
 
+          </div>
         </main>
     </div>
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
     @yield('scripts')
 
-
-    @yield('CSS')
 </body>
 </html>

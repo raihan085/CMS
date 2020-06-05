@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Posts;
+namespace App\Http\Requests\posts;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequestPost extends FormRequest
+class CreatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,11 @@ class CreateRequestPost extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:posts',
+            'title' =>'required|unique:posts',
             'description' => 'required',
             'content' => 'required',
-            'image' = > 'required|image',
+            'image' => 'required|image',
+            'published_at' => 'required|date'
         ];
     }
 }

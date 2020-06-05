@@ -25,7 +25,7 @@
 <form action="{{ isset($posts)?route('post.update',$posts->id):route('post.store') }}" method="POST" enctype="multipart/form-data">
   @csrf
 
-  @if($posts)
+  @if(isset($posts))
     @method('PUT')
   @endif
 
@@ -50,9 +50,13 @@
 
   </div>
 
-  @if($posts)
+  @if(isset($posts))
 
-    <img src="{{ asset($posts->image) }}" alt="" style="width:100%">
+    <div class="form-group">
+
+      <img src="{{ asset($posts->image) }}" alt="" style="width: 100">
+
+    </div>
 
   @endif
 

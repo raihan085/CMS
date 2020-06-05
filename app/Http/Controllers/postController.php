@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Post;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
+
+use App\Http\Requests\Posts\CreatePostRequest;
+use App\Http\Requests\Posts\UpdatePostRequest;
 
 class postController extends Controller
 {
@@ -35,26 +40,18 @@ class postController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-
-      $this->validate($request,[
-        'title' => 'required|unique:posts',
-        'description' => 'required',
-        'content' => 'required',
-        'image' => 'required|image',
-        'published_at' => 'date',
-      ]);
 
         Post::create([
           'title' => $request->title,
           'description' => $request->description,
           'content' => $request->content,
-          'image' => $request->image->store('posts'),
+          'image' => $request->image->store('posts','public'),
           'published_at' => $request->published_at,
         ]);
 
-        session()->flash('success','Posts created successfully.');
+        session()->flash('success','Post created successfully.');
 
         return redirect(route('post.index'));
     }
@@ -88,9 +85,30 @@ class postController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+
+      if($request->hasFile('image'))
+      {
+        $image = $request->image->store('post');
+
+        Storage::delete($post->image);
+
+        $post->image = $image;
+
+      }
+
+
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->content = $request->content;
+        $post->published_at = $request->published_at;
+
+        $post.save();
+
+        session()->flash('success','Post Updated successfully');
+
+        return redirect(route('post.index'));
     }
 
     /**
